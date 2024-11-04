@@ -15,28 +15,28 @@ def limit_data_to_duration(data, max_duration=2400):
 
 # Funzione per estrarre le feature da un file di dati
 def extract_features_from_file(data):
-    accel_data = data[:, :3]  # X, Y, Z accelerazione
-    rot_data = data[:, 3:6]   # X, Y, Z rotazione
 
-    mean = np.mean(data, axis=0)
-    std_dev = np.std(data, axis=0)
-    max_val = np.max(data, axis=0)
-    min_val = np.min(data, axis=0)
-    range_val = max_val - min_val
+    accel_data = data[:, :3]  # Accelerazione
+    rot_data = data[:, 3:6]   # Rotazione
 
-    sum_accel = np.sum(np.linalg.norm(accel_data, axis=1))
-    sum_rot = np.sum(np.linalg.norm(rot_data, axis=1))
+    mean = np.mean(data, axis=0) # Media
+    std_dev = np.std(data, axis=0) # Deviazione standard
+    min_val = np.min(data, axis=0) # Valore minimo
+    max_val = np.max(data, axis=0) # Valore massimo
+    range_val = max_val - min_val # Range valore
+
+    sum_accel = np.sum(np.linalg.norm(accel_data, axis=1)) # Norma 2 - accelerazione
+    sum_rot = np.sum(np.linalg.norm(rot_data, axis=1)) # Norma 2 - rotazione
 
     # Calcola il tempo relativo in millisecondi
-    num_samples = accel_data.shape[0]
-    relative_time = np.arange(0, num_samples * 5, 5)  # Ogni campione è a 5 ms di distanza
+    num_samples = accel_data.shape[0] # Numero di campioni
 
     # Aggiungi una statistica del tempo (come la media e deviazione standard)
-    mean_time = np.mean(relative_time)
-    std_dev_time = np.std(relative_time)
+    mean_time = np.mean(relative_time) # Tempo medio
+    std_dev_time = np.std(relative_time) # Deviazione standard del tempo
 
     # Costruisci le feature come concatenazione
-    features = np.concatenate([mean, std_dev, range_val, [sum_accel, sum_rot, mean_time, std_dev_time]])
+    features = np.concatenate([mean, std_dev, range_val, [sum_accel, sum_rot, mean_time, std_dev_time]]) # Features
     
     return features
 
@@ -45,14 +45,14 @@ def load_fall_data_and_extract_features(directory, max_duration=2400):
     data = []
     labels = []
     
-    for subject_folder in os.listdir(directory):
+    for subject_folder in os.listdir(directory): 
         folder_path = os.path.join(directory, subject_folder)
         
         if os.path.isdir(folder_path):
             for file_name in os.listdir(folder_path):
                 file_path = os.path.join(folder_path, file_name)
                 
-                if file_name.endswith('.txt') and "Readme" not in file_name :
+                if file_name.endswith('.txt') and "Readme" not in file_name:
                     with open(file_path, 'r') as f:
                         lines = f.readlines()
                     
