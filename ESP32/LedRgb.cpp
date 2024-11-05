@@ -10,7 +10,7 @@ LedRgb::LedRgb(int redPin, int greenPin, int bluePin){
     pinMode(greenPin, OUTPUT);
     pinMode(bluePin, OUTPUT);
 
-    off();
+    this->off();
 }
 
 void LedRgb::setColor(int rVal, int gVal, int bVal){
