@@ -7,10 +7,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 
 # Flag per decidere se salvare il modello
-save = False
+save = True
 
 # Funzione per limitare i dati alla durata massima
-def limit_data_to_duration(data, max_duration=2400):
+def limit_data_to_duration(data, max_duration=2400): # Limitato a 12 secondi (2400 letture ogni 5 ms (200 Hz)))
     return data[:max_duration]  # Limita la durata a max_duration campioni
 
 # Funzione per estrarre le feature da un file di dati
@@ -30,6 +30,7 @@ def extract_features_from_file(data):
 
     # Calcola il tempo relativo in millisecondi
     num_samples = accel_data.shape[0] # Numero di campioni
+    relative_time = np.arange(0, num_samples * 5, 5)  # Ogni campione è a 5 ms di distanza
 
     # Aggiungi una statistica del tempo (come la media e deviazione standard)
     mean_time = np.mean(relative_time) # Tempo medio
@@ -186,7 +187,7 @@ if rf:
     scaler = joblib.load(scaler_filename)
 
     # Classifica i nuovi dati da un secondo percorso
-    second_directory = "data_blocks"  # Specifica il percorso corretto
+    second_directory = "NEW_DATA/"  # Specifica il percorso corretto
     new_predictions = classify_new_data(second_directory, rf, scaler)
 
     # Mostra le predizioni per i nuovi dati
@@ -207,7 +208,7 @@ else:
     print(f'Length of labels: {len(labels)}')
 
     # Dividi il dataset in training e testing set
-    X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.25, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.3, random_state=42)
 
     # Normalizzazione
     scaler = StandardScaler()
