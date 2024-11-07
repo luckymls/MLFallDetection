@@ -13,6 +13,8 @@ public:
     bool appendToFile(const char* path, const char* message); // Append to a file
     bool deleteFile(const char* path); // Delete a file
     size_t checkMemory(); // Get SPIFFS memory size in bytes 
+    bool fileExists(const char* path); // Check if a file already exists in memory
+    
 };
 
 #endif

@@ -1,6 +1,8 @@
 #include "Spiffs.h"
 
-SpiffsMem::Spiffs() {}
+SpiffsMem::Spiffs() {
+    this->begin(); // Inizializza la memoria TODO: check if it really works
+}
 
 bool SpiffsMem::begin() {
 
@@ -75,3 +77,10 @@ size_t SpiffsMem::checkMemory() {
     size_t spaceLeftBytes = totalBytes - usedBytes;
     return spaceLeftBytes;
 }
+
+bool SpiffsMem::fileExists(const char* path){
+    
+    return SPIFFS.exists(path);
+
+}
+
