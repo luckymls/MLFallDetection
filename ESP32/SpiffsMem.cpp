@@ -1,15 +1,15 @@
 #include "Spiffs.h"
 
-Spiffs::Spiffs() {}
+SpiffsMem::Spiffs() {}
 
-bool Spiffs::begin() {
+bool SpiffsMem::begin() {
 
     if (!SPIFFS.begin(true))
         return false;    
     return true;
 }
 
-bool Spiffs::writeFile(const char* path, const char* message) {
+bool SpiffsMem::writeFile(const char* path, const char* message) {
 
     File file = SPIFFS.open(path, FILE_WRITE);
 
@@ -26,7 +26,7 @@ bool Spiffs::writeFile(const char* path, const char* message) {
     return true;
 }
 
-String Spiffs::readFile(const char* path) {
+String SpiffsMem::readFile(const char* path) {
 
     File file = SPIFFS.open(path, FILE_READ);
     String content;
@@ -42,7 +42,7 @@ String Spiffs::readFile(const char* path) {
     return content;
 }
 
-bool Spiffs::appendToFile(const char* path, const char* message) {
+bool SpiffsMem::appendToFile(const char* path, const char* message) {
 
     File file = SPIFFS.open(path, FILE_APPEND);
 
@@ -60,11 +60,18 @@ bool Spiffs::appendToFile(const char* path, const char* message) {
     return true;
 }
 
-bool Spiffs::deleteFile(const char* path) {
+bool SpiffsMem::deleteFile(const char* path) {
 
     if (SPIFFS.remove(path)) 
         return true;
     
     return false;
     
+}
+
+size_t SpiffsMem::checkMemory() {
+    size_t totalBytes = SPIFFS.totalBytes();
+    size_t usedBytes = SPIFFS.usedBytes();
+    size_t spaceLeftBytes = totalBytes - usedBytes;
+    return spaceLeftBytes;
 }
